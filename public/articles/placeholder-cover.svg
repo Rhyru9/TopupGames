@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-label="R9host Artikel">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0a0a0a"/>
+      <stop offset="100%" stop-color="#141414"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect x="48" y="48" width="1104" height="534" fill="none" stroke="#ff7a1a" stroke-width="3" opacity="0.35"/>
+  <text x="600" y="290" fill="#ff7a1a" font-family="Arial, sans-serif" font-size="42" font-weight="700" text-anchor="middle" letter-spacing="8">R9host</text>
+  <text x="600" y="360" fill="#d8d8d8" font-family="Arial, sans-serif" font-size="28" text-anchor="middle">Artikel &amp; Tips Top Up Game</text>
+</svg>

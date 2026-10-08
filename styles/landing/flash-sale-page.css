@@ -1,0 +1,128 @@
+/* Halaman flash sale — layout spesifik (shell di storefront-page.css) */
+
+.flash-sale-page__inner {
+  max-width: 87.5rem;
+}
+
+.flash-sale-page__campaigns {
+  display: grid;
+  gap: 2.5rem;
+  margin-top: 2rem;
+}
+
+.flash-sale-page__campaign {
+  clip-path: polygon(16px 0, 100% 0, 100% calc(100% - 16px), calc(100% - 16px) 100%, 0 100%, 0 16px);
+  border: 1px solid color-mix(in srgb, var(--color-neon, #ff7a1a) 25%, var(--color-line, #2a2a2a));
+  background:
+    linear-gradient(135deg, rgba(255, 122, 26, 0.06) 0%, transparent 42%),
+    color-mix(in srgb, var(--color-steel, #141414) 92%, transparent);
+  padding: 1.25rem;
+}
+
+@media (min-width: 768px) {
+  .flash-sale-page__campaign {
+    padding: 1.5rem;
+  }
+}
+
+.flash-sale-page__campaign-head {
+  display: grid;
+  gap: 1.25rem;
+}
+
+@media (min-width: 900px) {
+  .flash-sale-page__campaign-head {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: start;
+    gap: 1.5rem;
+  }
+}
+
+.flash-sale-page__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
+  background: rgba(255, 122, 26, 0.12);
+  padding: 0.35rem 0.65rem;
+  font-family: var(--font-display), ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.625rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-neon, #ff7a1a);
+}
+
+.flash-sale-page__campaign-title {
+  margin: 0.75rem 0 0;
+  font-family: var(--font-display), ui-sans-serif, system-ui, sans-serif;
+  font-size: clamp(1.25rem, 3.5vw, 1.75rem);
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  line-height: 1.15;
+  text-transform: uppercase;
+  color: var(--color-chrome, #d8d8d8);
+}
+
+.flash-sale-page__campaign-accent {
+  display: block;
+  color: var(--color-neon, #ff7a1a);
+}
+
+.flash-sale-page__campaign-tagline {
+  margin: 0.5rem 0 0;
+  font-size: 0.875rem;
+  color: var(--color-chrome-dim, #8d8d8d);
+}
+
+.flash-sale-page__grid {
+  display: grid;
+  gap: 0.875rem;
+  margin-top: 1.25rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+@media (min-width: 640px) {
+  .flash-sale-page__grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .flash-sale-page__grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1280px) {
+  .flash-sale-page__grid {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+}
+
+.flash-neon-card--grid {
+  width: 100%;
+}
+
+.flash-sale-countdown-inline {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
+  border: 1px solid color-mix(in srgb, var(--color-neon, #ff7a1a) 35%, var(--color-line, #2a2a2a));
+  background: rgba(0, 0, 0, 0.35);
+  padding: 0.4rem 0.65rem;
+  font-family: var(--font-display), ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.625rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.flash-sale-countdown-inline__label {
+  color: var(--color-chrome-dim, #8d8d8d);
+}
+
+.flash-sale-countdown-inline__digits {
+  color: var(--color-neon, #ff7a1a);
+}

@@ -1,0 +1,1273 @@
+/* Invoice + cek transaksi storefront */
+
+.invoice-page {
+  min-height: 100%;
+  background:
+    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(255, 122, 26, 0.08), transparent),
+    #0a0a0a;
+  color: #e8e8e8;
+  padding-bottom: 1.5rem;
+}
+
+.invoice-page__inner {
+  max-width: 32rem;
+  margin: 0 auto;
+  padding: 1.25rem 1rem 2rem;
+}
+
+.invoice-page__inner--cek {
+  max-width: 36rem;
+  padding-top: 6.5rem;
+}
+
+.invoice-page__top {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.invoice-page__back {
+  font-size: 0.8125rem;
+  color: #a8a8a8;
+  text-decoration: none;
+}
+
+.invoice-page__back:hover {
+  color: #ff7a1a;
+}
+
+.invoice-page__title {
+  margin: 0;
+  font-family: var(--font-display), ui-sans-serif, system-ui, sans-serif;
+  font-size: clamp(1.65rem, 5vw, 2.15rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  color: #f4f4f4;
+}
+
+.invoice-page__lead {
+  margin: 0.5rem 0 1.25rem;
+  font-size: 0.875rem;
+  color: #8d8d8d;
+}
+
+.invoice-card {
+  border: 1px solid color-mix(in srgb, var(--color-neon, #ff7a1a) 18%, #2a2a2a);
+  border-radius: 1.25rem;
+  background: color-mix(in srgb, #0a0a0a 88%, transparent);
+  padding: 1.25rem;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.invoice-card__head {
+  margin-bottom: 1.25rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #2a2a2a;
+}
+
+.invoice-card__eyebrow {
+  margin: 0;
+  font-size: 0.6875rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #8d8d8d;
+}
+
+.invoice-card__code {
+  margin: 0.35rem 0;
+  font-family: var(--font-display), ui-sans-serif, system-ui, sans-serif;
+  font-size: 1.15rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  word-break: break-all;
+}
+
+.invoice-card__status {
+  display: inline-flex;
+  margin: 0;
+  padding: 0.22rem 0.65rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  background: #2a2a2a;
+  color: #e8e8e8;
+}
+
+.invoice-card__status--paid {
+  background: rgba(255, 122, 26, 0.15);
+  color: #ff7a1a;
+}
+
+.invoice-card__status--unpaid {
+  background: rgba(251, 191, 36, 0.12);
+  color: #fbbf24;
+}
+
+.invoice-card__status--expired,
+.invoice-card__status--failed {
+  background: rgba(248, 113, 113, 0.12);
+  color: #f87171;
+}
+
+.invoice-card__meta {
+  margin: 0;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.invoice-card__meta dt {
+  margin: 0;
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #8d8d8d;
+}
+
+.invoice-card__meta dd {
+  margin: 0.15rem 0 0;
+  font-size: 0.9375rem;
+}
+
+.invoice-card__muted {
+  color: #8d8d8d;
+}
+
+.invoice-card__total {
+  font-size: 1.125rem;
+  font-weight: 800;
+  color: #ff7a1a;
+}
+
+.invoice-card__pay {
+  margin-top: 1.25rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid #2a2a2a;
+  display: grid;
+  gap: 1rem;
+}
+
+.invoice-card__qr {
+  text-align: center;
+}
+
+.invoice-card__qr img {
+  width: min(100%, 220px);
+  height: auto;
+  background: #fff;
+  padding: 0.5rem;
+}
+
+.invoice-card__qr p {
+  margin: 0.5rem 0 0;
+  font-size: 0.8125rem;
+  color: #8d8d8d;
+}
+
+.invoice-card__paycode-label {
+  margin: 0;
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #8d8d8d;
+}
+
+.invoice-card__paycode-value {
+  margin: 0.35rem 0 0.65rem;
+  font-family: ui-monospace, monospace;
+  font-size: 1.125rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  word-break: break-all;
+}
+
+.invoice-card__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.65rem 1.1rem;
+  border: 1px solid color-mix(in srgb, var(--color-neon, #ff7a1a) 22%, #2a2a2a);
+  border-radius: 999px;
+  background: #1a1a1a;
+  color: #e8e8e8;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.invoice-card__btn--primary {
+  border-color: #ff7a1a;
+  background: #ff7a1a;
+  color: #0a0a0a;
+}
+
+.invoice-card__hint {
+  margin: 0.75rem 0 0;
+  font-size: 0.8125rem;
+  color: #8d8d8d;
+}
+
+.cek-form {
+  display: grid;
+  gap: 0.9rem;
+  margin-bottom: 1.5rem;
+  padding: 1.35rem 1.25rem;
+  border: 1px solid color-mix(in srgb, var(--color-neon, #ff7a1a) 18%, #2a2a2a);
+  border-radius: 1.25rem;
+  background: color-mix(in srgb, #0a0a0a 88%, transparent);
+  box-shadow: 0 12px 36px -22px rgba(255, 122, 26, 0.45);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.cek-form__field {
+  display: grid;
+  gap: 0.4rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: #c8c8c8;
+}
+
+.cek-form__field input {
+  min-height: 2.7rem;
+  padding: 0.7rem 1rem;
+  border: 1px solid color-mix(in srgb, var(--color-neon, #ff7a1a) 22%, #2a2a2a);
+  border-radius: 999px;
+  background: rgba(8, 8, 8, 0.72);
+  color: #e8e8e8;
+  font-size: 0.9375rem;
+  outline: none;
+}
+
+.cek-form__field input:focus {
+  border-color: color-mix(in srgb, var(--color-neon, #ff7a1a) 70%, #2a2a2a);
+  box-shadow: 0 0 0 3px rgba(255, 122, 26, 0.12);
+}
+
+.cek-form__submit {
+  margin-top: 0.15rem;
+  min-height: 2.7rem;
+  padding: 0.85rem 1.15rem;
+  border: 0;
+  border-radius: 999px;
+  background: var(--color-neon, #ff7a1a);
+  color: #050505;
+  font-family: var(--font-body), ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.9rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  cursor: pointer;
+}
+
+.cek-form__submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.cek-form__error {
+  margin: 0;
+  font-size: 0.8125rem;
+  color: #f87171;
+}
+
+.invoice-page__result {
+  margin-top: 0.5rem;
+}
+
+.invoice-page__result-link {
+  margin: 0.75rem 0 0;
+  font-size: 0.8125rem;
+}
+
+.invoice-page__result-link a {
+  color: #ff7a1a;
+}
+
+/* —— Deposit / topup pay invoice —— */
+.invoice-page--deposit {
+  background:
+    radial-gradient(ellipse 70% 45% at 50% -8%, rgba(255, 122, 26, 0.12), transparent 55%),
+    radial-gradient(ellipse 50% 40% at 100% 30%, rgba(255, 122, 26, 0.04), transparent 50%),
+    #080808;
+}
+
+.invoice-page__inner--deposit {
+  width: 100%;
+  max-width: 40rem;
+  margin-left: auto;
+  margin-right: auto;
+  padding-top: 1.25rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+@media (min-width: 768px) {
+  .invoice-page__inner--deposit {
+    max-width: 48rem;
+    padding-top: 1.75rem;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+
+@media (min-width: 1100px) {
+  .invoice-page__inner--deposit {
+    max-width: 56rem;
+  }
+}
+
+.r9host-deposit {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--color-neon, #ff7a1a) 22%, #2a2a2a);
+  background:
+    linear-gradient(165deg, color-mix(in srgb, var(--color-neon, #ff7a1a) 12%, transparent), transparent 40%),
+    linear-gradient(180deg, #141414 0%, #0e0e0e 100%);
+  padding: 1.15rem 1rem 1.3rem;
+  clip-path: polygon(0 0, calc(100% - 18px) 0, 100% 18px, 100% 100%, 18px 100%, 0 calc(100% - 18px));
+}
+
+.r9host-deposit--order-failed {
+  --color-neon: #ff4d4d;
+}
+
+@media (min-width: 768px) {
+  .r9host-deposit {
+    padding: 1.5rem 1.5rem 1.65rem;
+  }
+}
+
+.r9host-deposit__glow {
+  pointer-events: none;
+  position: absolute;
+  inset: -20% auto auto 40%;
+  width: 16rem;
+  height: 16rem;
+  background: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--color-neon, #ff7a1a) 28%, transparent),
+    transparent 70%
+  );
+  filter: blur(8px);
+}
+
+.r9host-deposit__head,
+.r9host-deposit__hero,
+.r9host-deposit__chips,
+.r9host-deposit__pay,
+.r9host-deposit__success {
+  position: relative;
+  z-index: 1;
+}
+
+.r9host-deposit__head {
+  margin-bottom: 1.1rem;
+}
+
+.r9host-deposit__head-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.r9host-deposit__eyebrow {
+  margin: 0;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--color-neon, #ff7a1a) 70%, #8d8d8d);
+}
+
+.r9host-deposit__live {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #9a9a9a;
+}
+
+.r9host-deposit__live--pulse {
+  color: var(--color-neon, #ff7a1a);
+}
+
+.r9host-deposit__live-dot {
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: 50%;
+  background: var(--color-neon, #ff7a1a);
+  box-shadow: 0 0 0 0 rgba(255, 122, 26, 0.55);
+  animation: r9host-deposit-ping 1.6s ease-out infinite;
+}
+
+.r9host-deposit__title-row {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin-top: 0.45rem;
+}
+
+.r9host-deposit__code {
+  margin: 0;
+  min-width: 0;
+  flex: 1;
+  font-family: var(--font-orbitron), var(--font-display), ui-sans-serif, system-ui, sans-serif;
+  font-size: clamp(0.78rem, 2.4vw, 1.2rem);
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  color: #f4f4f4;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.r9host-deposit__icon-btn {
+  appearance: none;
+  flex-shrink: 0;
+  border: 1px solid #333;
+  background: #1a1a1a;
+  color: #c8c8c8;
+  padding: 0.35rem 0.55rem;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.r9host-deposit__icon-btn:hover {
+  border-color: var(--color-neon, #ff7a1a);
+  color: var(--color-neon, #ff7a1a);
+}
+
+.r9host-deposit__status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin: 0.7rem 0 0;
+  padding: 0.35rem 0.65rem;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  background: #222;
+  color: #e8e8e8;
+}
+
+.r9host-deposit__status--unpaid {
+  background: rgba(251, 191, 36, 0.12);
+  color: #fbbf24;
+}
+
+.r9host-deposit__status--paid {
+  background: color-mix(in srgb, var(--color-neon, #ff7a1a) 14%, transparent);
+  color: var(--color-neon, #ff7a1a);
+}
+
+.r9host-deposit__status--expired,
+.r9host-deposit__status--failed {
+  background: rgba(248, 113, 113, 0.12);
+  color: #f87171;
+}
+
+.r9host-deposit__status-pulse {
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: 50%;
+  background: currentColor;
+  animation: r9host-deposit-ping 1.4s ease-out infinite;
+}
+
+.r9host-deposit__hero {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1.05rem;
+  border: 1px solid color-mix(in srgb, var(--color-neon, #ff7a1a) 28%, #2a2a2a);
+  background: linear-gradient(
+      120deg,
+      color-mix(in srgb, var(--color-neon, #ff7a1a) 16%, transparent),
+      transparent 60%
+    ),
+    #101010;
+  margin-bottom: 0.85rem;
+}
+
+.r9host-deposit__hero-label {
+  margin: 0;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #8f8f8f;
+}
+
+.r9host-deposit__hero-total {
+  margin: 0.25rem 0 0;
+  font-family: var(--font-orbitron), var(--font-display), ui-sans-serif, system-ui, sans-serif;
+  font-size: clamp(1.2rem, 3.8vw, 2rem);
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  color: var(--color-neon, #ff7a1a);
+  white-space: nowrap;
+}
+
+.r9host-deposit__hero-sub {
+  margin: 0.35rem 0 0;
+  font-size: 0.78rem;
+  color: #a0a0a0;
+}
+
+.r9host-deposit__timer {
+  text-align: right;
+  min-width: 7.5rem;
+}
+
+.r9host-deposit__timer-label {
+  margin: 0;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #8a8a8a;
+}
+
+.r9host-deposit__timer-value {
+  margin: 0.2rem 0 0;
+  font-family: var(--font-orbitron), ui-monospace, monospace;
+  font-size: clamp(0.95rem, 3vw, 1.35rem);
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  color: #f4f4f4;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.r9host-deposit__timer--expired .r9host-deposit__timer-value {
+  color: #f87171;
+}
+
+.r9host-deposit__timer--paid .r9host-deposit__timer-value {
+  color: var(--color-neon, #ff7a1a);
+  font-size: 1.05rem;
+  letter-spacing: 0.02em;
+}
+
+.r9host-deposit__chips {
+  margin: 0 0 1.15rem;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.45rem;
+}
+
+.r9host-deposit__chip {
+  padding: 0.65rem 0.7rem;
+  border: 1px solid #2a2a2a;
+  background: #121212;
+}
+
+.r9host-deposit__chip dt {
+  margin: 0;
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #7a7a7a;
+}
+
+.r9host-deposit__chip dd {
+  margin: 0.25rem 0 0;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #e8e8e8;
+  word-break: break-word;
+}
+
+.r9host-deposit__pay {
+  display: grid;
+  gap: 1.15rem;
+}
+
+.r9host-deposit__pay-layout {
+  display: grid;
+  gap: 1rem;
+}
+
+@media (min-width: 768px) {
+  .r9host-deposit__pay-layout {
+    grid-template-columns: minmax(15rem, 0.9fr) minmax(0, 1.1fr);
+    gap: 1.25rem;
+    align-items: start;
+  }
+}
+
+.r9host-deposit__qr-card {
+  display: grid;
+  justify-items: center;
+  gap: 0.65rem;
+  padding: 1.1rem 1rem;
+  border: 1px solid #2f2f2f;
+  background: #101010;
+}
+
+@media (min-width: 768px) {
+  .r9host-deposit__qr-card {
+    padding: 1.25rem;
+  }
+}
+
+.r9host-deposit__qr-frame {
+  position: relative;
+  padding: 0.75rem;
+  background: #fff;
+}
+
+.r9host-deposit__qr-corner {
+  position: absolute;
+  width: 0.85rem;
+  height: 0.85rem;
+  border: 2px solid var(--color-neon, #ff7a1a);
+}
+
+.r9host-deposit__qr-corner--tl {
+  top: 0.2rem;
+  left: 0.2rem;
+  border-right: 0;
+  border-bottom: 0;
+}
+
+.r9host-deposit__qr-corner--tr {
+  top: 0.2rem;
+  right: 0.2rem;
+  border-left: 0;
+  border-bottom: 0;
+}
+
+.r9host-deposit__qr-corner--bl {
+  bottom: 0.2rem;
+  left: 0.2rem;
+  border-right: 0;
+  border-top: 0;
+}
+
+.r9host-deposit__qr-corner--br {
+  bottom: 0.2rem;
+  right: 0.2rem;
+  border-left: 0;
+  border-top: 0;
+}
+
+.r9host-deposit__qr-img {
+  display: block;
+  width: min(100%, 220px);
+  height: auto;
+}
+
+@media (min-width: 768px) {
+  .r9host-deposit__qr-img {
+    width: min(100%, 260px);
+  }
+}
+
+.r9host-deposit__qr-caption {
+  margin: 0;
+  text-align: center;
+  font-size: 0.75rem;
+  color: #8f8f8f;
+}
+
+.r9host-deposit__pay-actions {
+  display: grid;
+  gap: 0.7rem;
+  align-content: start;
+}
+
+.r9host-deposit__va {
+  padding: 0.85rem 0.9rem;
+  border: 1px dashed color-mix(in srgb, var(--color-neon, #ff7a1a) 35%, #333);
+  background: rgba(255, 122, 26, 0.04);
+}
+
+.r9host-deposit__va-label {
+  margin: 0;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #8a8a8a;
+}
+
+.r9host-deposit__va-value {
+  margin: 0.4rem 0 0.7rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: #f4f4f4;
+  word-break: break-all;
+}
+
+.r9host-deposit__btn {
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  min-height: 2.75rem;
+  padding: 0.7rem 1rem;
+  border: 1px solid #333;
+  background: #181818;
+  color: #e8e8e8;
+  font-family: var(--font-display), ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease, transform 0.15s ease;
+}
+
+.r9host-deposit__btn:hover {
+  transform: translateY(-1px);
+}
+
+.r9host-deposit__success-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  justify-content: center;
+}
+
+.r9host-deposit__btn--primary {
+  border-color: var(--color-neon, #ff7a1a);
+  background: var(--color-neon, #ff7a1a);
+  color: #0a0a0a;
+}
+
+.r9host-deposit__btn--primary:hover {
+  filter: brightness(1.05);
+}
+
+.r9host-deposit__btn--ghost:hover {
+  border-color: var(--color-neon, #ff7a1a);
+  color: var(--color-neon, #ff7a1a);
+}
+
+.r9host-deposit__btn--ok {
+  border-color: var(--color-neon, #ff7a1a);
+  color: var(--color-neon, #ff7a1a);
+}
+
+.r9host-deposit__hint {
+  margin: 0;
+  font-size: 0.75rem;
+  line-height: 1.45;
+  color: #8a8a8a;
+}
+
+.r9host-deposit__guides {
+  padding-top: 0.35rem;
+  border-top: 1px solid #262626;
+}
+
+.r9host-deposit__guides-head {
+  margin-bottom: 0.75rem;
+}
+
+.r9host-deposit__guides-title {
+  margin: 0;
+  font-family: var(--font-display), ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: #f0f0f0;
+}
+
+.r9host-deposit__guides-lead {
+  margin: 0.3rem 0 0;
+  font-size: 0.78rem;
+  color: #8f8f8f;
+}
+
+.r9host-deposit__accordions {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.r9host-deposit__accordion {
+  border: 1px solid #2a2a2a;
+  background: #111;
+  overflow: hidden;
+}
+
+.r9host-deposit__accordion--open {
+  border-color: color-mix(in srgb, var(--color-neon, #ff7a1a) 35%, #2a2a2a);
+}
+
+.r9host-deposit__accordion-toggle {
+  appearance: none;
+  width: 100%;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.8rem 0.85rem;
+  border: 0;
+  background: transparent;
+  color: #e8e8e8;
+  text-align: left;
+  cursor: pointer;
+}
+
+.r9host-deposit__accordion-num {
+  font-family: var(--font-orbitron), ui-monospace, monospace;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--color-neon, #ff7a1a);
+}
+
+.r9host-deposit__accordion-label {
+  font-size: 0.84rem;
+  font-weight: 700;
+}
+
+.r9host-deposit__accordion-chevron {
+  font-size: 1rem;
+  color: #8a8a8a;
+}
+
+.r9host-deposit__steps {
+  list-style: none;
+  margin: 0;
+  padding: 0 0.85rem 0.9rem;
+  display: grid;
+  gap: 0.55rem;
+}
+
+.r9host-deposit__step {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.65rem;
+  align-items: start;
+}
+
+.r9host-deposit__step-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.35rem;
+  height: 1.35rem;
+  border: 1px solid color-mix(in srgb, var(--color-neon, #ff7a1a) 40%, #333);
+  color: var(--color-neon, #ff7a1a);
+  font-size: 0.65rem;
+  font-weight: 800;
+}
+
+.r9host-deposit__step-text {
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: #c8c8c8;
+}
+
+.r9host-deposit__step-text b,
+.r9host-deposit__step-text strong {
+  color: #f4f4f4;
+  font-weight: 800;
+}
+
+.r9host-deposit__success {
+  display: grid;
+  justify-items: center;
+  gap: 0.55rem;
+  text-align: center;
+  padding: 1.25rem 0.5rem 0.25rem;
+  border-top: 1px solid #262626;
+  margin-top: 0.25rem;
+}
+
+.r9host-deposit__success-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border: 1px solid var(--color-neon, #ff7a1a);
+  background: color-mix(in srgb, var(--color-neon, #ff7a1a) 14%, transparent);
+  color: var(--color-neon, #ff7a1a);
+  font-size: 1.25rem;
+  font-weight: 800;
+}
+
+.r9host-deposit__success-title {
+  margin: 0.25rem 0 0;
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #f4f4f4;
+}
+
+.r9host-deposit__success-text {
+  margin: 0 0 0.5rem;
+  font-size: 0.82rem;
+  color: #9a9a9a;
+}
+
+.r9host-deposit__success--fail .r9host-deposit__success-title {
+  color: #f87171;
+}
+
+@media (max-width: 560px) {
+  .r9host-deposit {
+    padding: 1rem 0.85rem 1.15rem;
+  }
+
+  .r9host-deposit__title-row {
+    gap: 0.45rem;
+    margin-top: 0.35rem;
+  }
+
+  .r9host-deposit__code {
+    font-size: 0.72rem;
+    letter-spacing: 0.02em;
+  }
+
+  .r9host-deposit__icon-btn {
+    padding: 0.28rem 0.45rem;
+    font-size: 0.58rem;
+  }
+
+  .r9host-deposit__hero {
+    flex-wrap: nowrap;
+    align-items: flex-end;
+    gap: 0.65rem;
+    padding: 0.8rem 0.85rem;
+    margin-bottom: 0.7rem;
+  }
+
+  .r9host-deposit__hero-main {
+    min-width: 0;
+    flex: 1;
+  }
+
+  .r9host-deposit__hero-total {
+    font-size: 1.15rem;
+  }
+
+  .r9host-deposit__hero-sub {
+    font-size: 0.68rem;
+  }
+
+  .r9host-deposit__timer {
+    text-align: right;
+    min-width: 0;
+    flex-shrink: 0;
+  }
+
+  .r9host-deposit__timer-value {
+    font-size: 0.92rem;
+    letter-spacing: 0.04em;
+  }
+
+  .r9host-deposit__chips {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.35rem;
+    margin-bottom: 0.9rem;
+  }
+
+  .r9host-deposit__chip {
+    padding: 0.5rem 0.45rem;
+  }
+
+  .r9host-deposit__chip dt {
+    font-size: 0.52rem;
+  }
+
+  .r9host-deposit__chip dd {
+    font-size: 0.68rem;
+  }
+
+  .r9host-deposit__live {
+    font-size: 0.58rem;
+  }
+}
+
+@media (min-width: 561px) and (max-width: 767px) {
+  .r9host-deposit__chips {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@keyframes r9host-deposit-ping {
+  0% {
+    box-shadow: 0 0 0 0 rgba(255, 122, 26, 0.55);
+  }
+  70% {
+    box-shadow: 0 0 0 0.55rem rgba(255, 122, 26, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 122, 26, 0);
+  }
+}
+
+/* —— Product invoice extras (reuse r9host-deposit shell) —— */
+.r9host-invoice__product {
+  position: relative;
+  z-index: 1;
+  margin: 0 0 0.85rem;
+  padding: 0.9rem 1rem;
+  border: 1px solid #2a2a2a;
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--color-neon, #ff7a1a) 10%, transparent), transparent 55%),
+    #111;
+}
+
+.r9host-invoice__product-label {
+  margin: 0;
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #7a7a7a;
+}
+
+.r9host-invoice__product-name {
+  margin: 0.35rem 0 0;
+  font-family: var(--font-display), ui-sans-serif, system-ui, sans-serif;
+  font-size: clamp(1rem, 2.8vw, 1.2rem);
+  font-weight: 800;
+  color: #f4f4f4;
+  line-height: 1.25;
+}
+
+.r9host-invoice__product-sku {
+  margin: 0.25rem 0 0;
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: color-mix(in srgb, var(--color-neon, #ff7a1a) 75%, #c8c8c8);
+}
+
+.r9host-invoice__product-target {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.45rem 0.75rem;
+  margin: 0.75rem 0 0;
+  padding-top: 0.7rem;
+  border-top: 1px dashed #2f2f2f;
+  font-size: 0.78rem;
+  color: #8a8a8a;
+}
+
+.r9host-invoice__product-target strong {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.86rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: #f0f0f0;
+  word-break: break-word;
+}
+
+@media (max-width: 560px) {
+  .r9host-invoice__product {
+    padding: 0.75rem 0.8rem;
+  }
+
+  .r9host-invoice__product-name {
+    font-size: 0.95rem;
+  }
+
+  .r9host-invoice__product-sku {
+    font-size: 0.78rem;
+  }
+}
+
+/* —— Invoice panels: pembayaran + pesanan —— */
+.r9host-invoice__panel {
+  position: relative;
+  z-index: 1;
+  margin: 0 0 0.85rem;
+  padding: 0.9rem 1rem;
+  border: 1px solid #2a2a2a;
+  background: #111;
+}
+
+.r9host-invoice__panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.r9host-invoice__panel-title {
+  margin: 0;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #f0f0f0;
+}
+
+.r9host-invoice__panel-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.18rem 0.45rem;
+  font-size: 0.56rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #050505;
+  background: #8d8d8d;
+  clip-path: polygon(0 0, calc(100% - 4px) 0, 100% 4px, 100% 100%, 4px 100%, 0 calc(100% - 4px));
+}
+
+.r9host-invoice__panel-badge--paid,
+.r9host-invoice__panel-badge--fulfill-success {
+  background: var(--color-neon, #ff7a1a);
+}
+
+.r9host-invoice__panel-badge--unpaid {
+  background: #ffb020;
+}
+
+.r9host-invoice__panel-badge--expired,
+.r9host-invoice__panel-badge--failed,
+.r9host-invoice__panel-badge--fulfill-failed,
+.r9host-invoice__panel-badge--fulfill-cancelled {
+  background: #ff6b6b;
+  color: #fff;
+}
+
+.r9host-invoice__panel-badge--fulfill-queued,
+.r9host-invoice__panel-badge--fulfill-processing,
+.r9host-invoice__panel-badge--fulfill-none {
+  background: #5b9dff;
+}
+
+.r9host-invoice__panel-lead {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #f4f4f4;
+}
+
+.r9host-invoice__panel-text {
+  margin: 0.35rem 0 0;
+  font-size: 0.82rem;
+  line-height: 1.45;
+  color: #9a9a9a;
+}
+
+.r9host-invoice__panel-note {
+  margin: 0.75rem 0 0;
+  font-size: 0.8rem;
+  color: #9a9a9a;
+}
+
+.r9host-invoice__panel-note--warn {
+  color: #ffb0b0;
+}
+
+.r9host-invoice__panel-message {
+  margin: 0.75rem 0 0;
+  padding: 0.65rem 0.75rem;
+  border: 1px dashed #333;
+  background: #0c0c0c;
+  font-size: 0.78rem;
+  line-height: 1.4;
+  color: #c8c8c8;
+  word-break: break-word;
+}
+
+.r9host-invoice__panel-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.65rem 1rem;
+  margin: 0.85rem 0 0;
+}
+
+.r9host-invoice__panel-grid dt {
+  margin: 0;
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #6e6e6e;
+}
+
+.r9host-invoice__panel-grid dd {
+  margin: 0.2rem 0 0;
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: #ececec;
+  word-break: break-word;
+}
+
+.r9host-invoice__sn {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-top: 0.85rem;
+  padding: 0.75rem 0.85rem;
+  border: 1px solid color-mix(in srgb, var(--color-neon, #ff7a1a) 28%, #2a2a2a);
+  background: color-mix(in srgb, var(--color-neon, #ff7a1a) 6%, #0d0d0d);
+}
+
+.r9host-invoice__sn-label {
+  margin: 0;
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #7a7a7a;
+}
+
+.r9host-invoice__sn-value {
+  margin: 0.25rem 0 0;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--color-neon, #ff7a1a);
+  word-break: break-all;
+}
+
+@media (max-width: 560px) {
+  .r9host-invoice__panel-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* The access form uses the same brand and controls as checkout. */
+.invoice-access {
+  width: min(100%, 30rem);
+  margin: 0 auto;
+  padding: clamp(1.5rem, 5vw, 2.25rem);
+  border: 1px solid #30251c;
+  border-radius: 1.35rem;
+  background: #0c0c0c;
+}
+.invoice-access__logo { width: 12rem; margin-bottom: 1.5rem; }
+.invoice-access__eyebrow { margin: 0 0 0.5rem; color: var(--color-neon); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+.invoice-access__title { margin: 0; color: #f2f2f2; font-size: clamp(1.5rem, 5vw, 1.9rem); font-weight: 800; letter-spacing: -0.035em; }
+.invoice-access__lead { margin: 0.75rem 0 1.75rem; color: #aaa; font-size: 0.875rem; line-height: 1.75; }
+.invoice-access__label { display: block; margin-bottom: 0.6rem; color: #dedede; font-size: 0.875rem; font-weight: 650; }
+.invoice-access__input { width: 100%; min-height: 3rem; padding: 0.75rem 0.9rem; border: 1px solid #3c3c3c; border-radius: 0.8rem; background: #080808; color: #ededed; font-size: 1rem; transition: border-color 180ms ease; }
+.invoice-access__input::placeholder { color: #909090; }
+.invoice-access__input:focus { border-color: var(--color-neon); }
+.invoice-access__submit { width: 100%; min-height: 3rem; margin-top: 1.1rem; padding: 0.75rem 1rem; border: 0; border-radius: 0.8rem; background: var(--color-neon); color: #0b0b0b; font-size: 0.875rem; font-weight: 750; transition: background-color 180ms ease, opacity 180ms ease; }
+.invoice-access__submit:hover:not(:disabled) { background: #ff974c; }
+.invoice-access__submit:disabled { opacity: 0.6; cursor: wait; }
+.invoice-access__error { margin: 0.8rem 0 0; padding: 0.75rem; border: 1px solid #65302d; border-radius: 0.65rem; background: #25100f; color: #ffb5af; font-size: 0.875rem; line-height: 1.6; }
+.invoice-access__back { display: flex; justify-content: center; align-items: center; min-height: 44px; margin-top: 0.75rem; color: #aaa; font-size: 0.8125rem; text-decoration: none; }
+.invoice-access__back:hover { color: var(--color-neon); }

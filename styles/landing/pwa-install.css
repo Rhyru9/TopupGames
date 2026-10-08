@@ -1,0 +1,189 @@
+/* PWA install prompt — logo left, text middle, install right */
+.pwa-install {
+  --pwa-cut: 8px;
+  --float-bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
+  --float-side: 0.9rem;
+  position: fixed;
+  z-index: 46;
+  left: var(--float-side);
+  right: auto;
+  bottom: var(--float-bottom);
+  width: min(17.25rem, calc(100vw - 5.5rem));
+  pointer-events: none;
+}
+
+.pwa-install__frame {
+  pointer-events: auto;
+  padding: 1px;
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--color-neon, #ff7a1a) 85%, #fff) 0%,
+    color-mix(in srgb, var(--color-neon, #ff7a1a) 55%, #2a2a2a) 55%,
+    color-mix(in srgb, var(--color-neon, #ff7a1a) 70%, #128c7e) 100%
+  );
+  clip-path: polygon(
+    0 0,
+    calc(100% - var(--pwa-cut)) 0,
+    100% var(--pwa-cut),
+    100% 100%,
+    var(--pwa-cut) 100%,
+    0 calc(100% - var(--pwa-cut))
+  );
+  box-shadow:
+    0 0 16px rgba(255, 122, 26, 0.18),
+    0 10px 24px rgba(0, 0, 0, 0.45);
+}
+
+.pwa-install__card {
+  position: relative;
+  min-width: 0;
+  background:
+    radial-gradient(ellipse at 0% 0%, rgba(255, 122, 26, 0.1), transparent 55%),
+    linear-gradient(165deg, #141414 0%, #0a0a0a 100%);
+  clip-path: polygon(
+    0 0,
+    calc(100% - var(--pwa-cut)) 0,
+    100% var(--pwa-cut),
+    100% 100%,
+    var(--pwa-cut) 100%,
+    0 calc(100% - var(--pwa-cut))
+  );
+}
+
+.pwa-install__close {
+  appearance: none;
+  position: absolute;
+  top: 0.2rem;
+  right: 0.2rem;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.2rem;
+  height: 1.2rem;
+  margin: 0;
+  padding: 0;
+  border: 1px solid #2a2a2a;
+  border-radius: 0.2rem;
+  background: #121212;
+  color: #9a9a9a;
+  font-size: 0.9rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.pwa-install__close:hover {
+  color: var(--color-neon, #ff7a1a);
+  border-color: color-mix(in srgb, var(--color-neon, #ff7a1a) 40%, #2a2a2a);
+}
+
+.pwa-install__main {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
+  min-height: 3.35rem;
+  padding: 0.45rem 1.85rem 0.45rem 0.45rem;
+  box-sizing: border-box;
+}
+
+.pwa-install__logo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 2.15rem;
+  width: 2.15rem;
+  height: 2.15rem;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--color-neon, #ff7a1a) 40%, #2a2a2a);
+  border-radius: 0.35rem;
+  background: #0c0c0c;
+}
+
+.pwa-install__logo-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  object-position: center;
+}
+
+.pwa-install__logo-fallback {
+  font-family: var(--font-display), ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.58rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  color: var(--color-neon, #ff7a1a);
+}
+
+.pwa-install__copy {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.12rem;
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+.pwa-install__kicker {
+  margin: 0;
+  font-family: var(--font-display), ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.45rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--color-neon, #ff7a1a) 75%, #8d8d8d);
+  line-height: 1;
+}
+
+.pwa-install__text {
+  margin: 0;
+  font-family: var(--font-body), ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  line-height: 1.15;
+  color: #e8e8e8;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+}
+
+.pwa-install__btn {
+  appearance: none;
+  flex: 0 0 auto;
+  border: none;
+  cursor: pointer;
+  padding: 0.4rem 0.55rem;
+  font-family: var(--font-display), ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.56rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #050505;
+  background: var(--color-neon, #ff7a1a);
+  border-radius: 0.25rem;
+  box-shadow: 0 0 12px rgba(255, 122, 26, 0.22);
+  white-space: nowrap;
+}
+
+.pwa-install__btn:hover:not(:disabled) {
+  filter: brightness(1.05);
+}
+
+.pwa-install__btn:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+@media (min-width: 640px) {
+  .pwa-install {
+    --float-bottom: calc(1.25rem + env(safe-area-inset-bottom, 0px));
+    --float-side: 1.25rem;
+  }
+}

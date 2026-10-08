@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE `orders` MODIFY `fulfillmentStatus` ENUM('NONE', 'QUEUED', 'PROCESSING', 'SUCCESS', 'FAILED', 'CANCELLED') NOT NULL DEFAULT 'NONE';

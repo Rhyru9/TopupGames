@@ -1,0 +1,106 @@
+.login-gate {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: grid;
+  place-items: center;
+  padding: 1.25rem;
+}
+
+.login-gate__backdrop {
+  position: absolute;
+  inset: 0;
+  border: 0;
+  background: rgba(0, 0, 0, 0.72);
+  cursor: pointer;
+}
+
+.login-gate__panel {
+  position: relative;
+  z-index: 1;
+  width: min(100%, 22.5rem);
+  padding: 1.35rem 1.25rem 1.2rem;
+  border: 1px solid color-mix(in srgb, var(--color-neon, #ff7a1a) 22%, #2a2a2a);
+  border-radius: 1.25rem;
+  background: color-mix(in srgb, #0a0a0a 92%, transparent);
+  box-shadow: 0 14px 40px -18px rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.login-gate__eyebrow {
+  margin: 0;
+  font-family: var(--font-body), ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--color-neon, #ff7a1a);
+}
+
+.login-gate__title {
+  margin: 0.4rem 0 0;
+  font-family: var(--font-display), ui-sans-serif, system-ui, sans-serif;
+  font-size: 1.35rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: #f4f4f4;
+}
+
+.login-gate__text {
+  margin: 0.55rem 0 0;
+  font-size: 0.9rem;
+  line-height: 1.45;
+  color: #9a9f9a;
+}
+
+.login-gate__text strong {
+  color: #e8e8e8;
+  font-weight: 700;
+}
+
+.login-gate__actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.55rem;
+  margin-top: 1.15rem;
+}
+
+.login-gate__btn {
+  display: grid;
+  place-items: center;
+  min-height: 2.55rem;
+  padding: 0.7rem 0.75rem;
+  border-radius: 999px;
+  font-family: var(--font-body), ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.875rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+}
+
+.login-gate__btn--primary {
+  background: var(--color-neon, #ff7a1a);
+  color: #0a0a0a;
+}
+
+.login-gate__btn--ghost {
+  border: 1px solid color-mix(in srgb, var(--color-neon, #ff7a1a) 22%, #2a2a2a);
+  background: transparent;
+  color: #cfcfcf;
+}
+
+.login-gate__dismiss {
+  appearance: none;
+  display: block;
+  width: 100%;
+  margin-top: 0.75rem;
+  border: 0;
+  background: transparent;
+  color: #8f948f;
+  font-size: 0.82rem;
+  cursor: pointer;
+}
+
+.login-gate__dismiss:hover {
+  color: #cfcfcf;
+}

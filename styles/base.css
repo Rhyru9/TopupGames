@@ -1,0 +1,120 @@
+@theme inline {
+  --color-ink: #050505;
+  --color-ink-2: #0a0a0a;
+  --color-steel: #141414;
+  --color-steel-2: #1c1c1c;
+  --color-line: #2a2a2a;
+  --color-chrome: #d8d8d8;
+  --color-chrome-dim: #8d8d8d;
+  --color-neon: #ff7a1a;
+  --color-neon-deep: #e24e00;
+  --font-display: var(--font-plus-jakarta);
+  --font-body: var(--font-plus-jakarta);
+  --font-orbitron: var(--font-plus-jakarta);
+  --font-rajdhani: var(--font-plus-jakarta);
+}
+
+:root {
+  --background: #050505;
+  --foreground: #e8e8e8;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background: #050505;
+  scroll-behavior: smooth;
+  scroll-padding-top: 6rem;
+  scroll-padding-bottom: 6rem;
+  scrollbar-gutter: stable;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-neon, #ff7a1a);
+  outline-offset: 4px;
+}
+
+:target {
+  scroll-margin-top: 1rem;
+}
+
+button,
+a,
+input,
+select,
+textarea {
+  touch-action: manipulation;
+}
+
+button:not(:disabled),
+summary {
+  cursor: pointer;
+}
+
+h1,
+h2,
+h3 {
+  text-wrap: balance;
+}
+
+.brand-logo {
+  display: block;
+  width: 12rem;
+  height: auto;
+  aspect-ratio: 2170 / 725;
+  max-width: 100%;
+  object-fit: contain;
+}
+
+.brand-logo--mark {
+  aspect-ratio: 1;
+  object-fit: cover;
+  object-position: left center;
+}
+
+@media (max-width: 767px) {
+  input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]),
+  select,
+  textarea {
+    font-size: max(1rem, 16px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html,
+  html:focus-within,
+  * {
+    scroll-behavior: auto !important;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-body), ui-sans-serif, system-ui, sans-serif;
+  font-size: 1rem;
+  font-weight: 500;
+  letter-spacing: -0.011em;
+  line-height: 1.5;
+  min-height: 100%;
+}
+
+::selection {
+  background: #ff7a1a;
+  color: #050505;
+}
+
+.font-display {
+  font-family: var(--font-display), ui-sans-serif, system-ui, sans-serif;
+  letter-spacing: -0.02em;
+}

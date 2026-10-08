@@ -1,0 +1,61 @@
+/* Sticky footer — konten tinggi natural, footer di bawah viewport */
+
+.storefront-shell {
+  position: relative;
+  min-height: 100dvh;
+}
+
+/* Satu layer latar: grid + vignette. Tanpa scanline mix-blend (mahal di GPU). */
+.storefront-shell__fx {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-color: #050505;
+  background-image:
+    radial-gradient(ellipse 80% 45% at 50% -8%, rgba(255, 122, 26, 0.12), transparent 55%),
+    linear-gradient(rgba(255, 122, 26, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 122, 26, 0.04) 1px, transparent 1px);
+  background-size: auto, 48px 48px, 48px 48px;
+}
+
+.storefront-shell__body {
+  position: relative;
+  z-index: 20;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 100dvh;
+}
+
+.storefront-shell__body > .storefront-footer {
+  margin-top: auto;
+}
+
+.storefront-shell__body > :not(.storefront-footer) {
+  min-width: 0;
+}
+
+.storefront-shell__body > main,
+.storefront-site > main {
+  flex: 1;
+}
+
+/* Halaman tanpa shell penuh (member, invoice, checkout) */
+.storefront-site {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+  background: var(--color-ink, #050505);
+  color: var(--color-chrome, #d8d8d8);
+}
+
+.storefront-site > :not(.storefront-footer):not(.storefront-compact-footer) {
+  min-width: 0;
+}
+
+.storefront-site > .storefront-footer,
+.storefront-site > .storefront-compact-footer {
+  margin-top: auto;
+}

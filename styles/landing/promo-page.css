@@ -1,0 +1,234 @@
+.promo-page__inner {
+  max-width: 87.5rem;
+}
+
+.promo-page__steps {
+  display: grid;
+  gap: 0.75rem;
+  margin-top: 1.75rem;
+}
+
+@media (min-width: 640px) {
+  .promo-page__steps {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.promo-page__step {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.95rem 1rem;
+  border: 1px solid color-mix(in srgb, var(--color-neon, #ff7a1a) 18%, #2a2a2a);
+  border-radius: 1.2rem;
+  background: color-mix(in srgb, #0a0a0a 84%, transparent);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.promo-page__step-n {
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  width: 2.15rem;
+  height: 2.15rem;
+  border-radius: 0.75rem;
+  background: linear-gradient(160deg, #ff9a3d 0%, var(--color-neon, #ff7a1a) 100%);
+  font-family: var(--font-display), ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.85rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: #050505;
+}
+
+.promo-page__step-t {
+  margin: 0.2rem 0 0;
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.4;
+  color: #f2f2f2;
+}
+
+.promo-page__grid {
+  display: grid;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+@media (min-width: 640px) {
+  .promo-page__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .promo-page__grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.promo-voucher-card {
+  position: relative;
+  overflow: hidden;
+  padding: 1.15rem 1.15rem 1rem;
+  border: 1px solid color-mix(in srgb, var(--color-neon, #ff7a1a) 22%, #2a2a2a);
+  border-radius: 1.25rem;
+  background: color-mix(in srgb, #0a0a0a 88%, transparent);
+  box-shadow: 0 12px 36px -22px rgba(255, 122, 26, 0.45);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.promo-voucher-card__glow {
+  display: none;
+}
+
+.promo-voucher-card__head {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.promo-voucher-card__badge {
+  display: inline-flex;
+  min-height: 1.7rem;
+  align-items: center;
+  padding: 0.22rem 0.7rem;
+  border-radius: 999px;
+  background: var(--color-neon, #ff7a1a);
+  font-family: var(--font-body), ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  color: #050505;
+  white-space: nowrap;
+}
+
+.promo-voucher-card__label {
+  position: relative;
+  margin: 0.75rem 0 0;
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: #f2f2f2;
+}
+
+.promo-voucher-card__code-row {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  gap: 0.5rem;
+  margin-top: 0.85rem;
+}
+
+.promo-voucher-card__code {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  border: 1px dashed color-mix(in srgb, var(--color-neon, #ff7a1a) 40%, #2a2a2a);
+  border-radius: 0.95rem;
+  background: rgba(0, 0, 0, 0.35);
+  padding: 0.7rem 0.9rem;
+  font-family: var(--font-display), ui-sans-serif, system-ui, sans-serif;
+  font-size: clamp(1rem, 3.5vw, 1.15rem);
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  color: var(--color-neon, #ff7a1a);
+}
+
+.promo-voucher-card__copy {
+  flex-shrink: 0;
+  border: none;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--color-neon, #ff7a1a) 16%, transparent);
+  padding: 0 1.05rem;
+  font-family: var(--font-body), ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.8125rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  color: var(--color-neon, #ff7a1a);
+  cursor: pointer;
+  transition: background 0.18s ease, color 0.18s ease;
+}
+
+.promo-voucher-card__copy:hover,
+.promo-voucher-card__copy.is-copied {
+  background: var(--color-neon, #ff7a1a);
+  color: #050505;
+}
+
+.promo-voucher-card__meta {
+  position: relative;
+  display: grid;
+  gap: 0.45rem;
+  margin-top: 0.95rem;
+  padding-top: 0.85rem;
+  border-top: 1px solid color-mix(in srgb, var(--color-neon, #ff7a1a) 12%, #2a2a2a);
+}
+
+.promo-voucher-card__meta-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  font-size: 0.75rem;
+  line-height: 1.45;
+}
+
+.promo-voucher-card__meta-row dt {
+  margin: 0;
+  color: var(--color-chrome-dim, #8d8d8d);
+}
+
+.promo-voucher-card__meta-row dd {
+  margin: 0;
+  text-align: right;
+  color: #f2f2f2;
+}
+
+.promo-page__flash {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.85rem;
+  margin-top: 2.5rem;
+  padding: 1.15rem 1.25rem;
+  border: 1px solid color-mix(in srgb, var(--color-neon, #ff7a1a) 18%, #2a2a2a);
+  border-radius: 1.25rem;
+  background: color-mix(in srgb, #0a0a0a 88%, transparent);
+}
+
+.promo-page__flash-title {
+  margin: 0;
+  font-family: var(--font-body), ui-sans-serif, system-ui, sans-serif;
+  font-size: 1rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #f2f2f2;
+}
+
+.promo-page__flash-text {
+  margin: 0.35rem 0 0;
+  font-size: 0.8125rem;
+  color: var(--color-chrome-dim, #8d8d8d);
+}
+
+.promo-page__flash-link {
+  border: 1px solid color-mix(in srgb, var(--color-neon, #ff7a1a) 40%, #2a2a2a);
+  border-radius: 999px;
+  padding: 0.55rem 1rem;
+  font-family: var(--font-body), ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.8125rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+  color: var(--color-neon, #ff7a1a);
+}
+
+.promo-page__flash-link:hover {
+  background: color-mix(in srgb, var(--color-neon, #ff7a1a) 12%, transparent);
+}

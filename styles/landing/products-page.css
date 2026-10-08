@@ -1,0 +1,13 @@
+/* Halaman katalog produk — layout spesifik (shell di storefront-page.css) */
+
+.products-page__inner {
+  max-width: 87.5rem;
+}
+
+.products-page__catalog {
+  margin-top: 1.75rem;
+}
+
+.products-page__catalog .catalog-neon__chips-bar {
+  margin-bottom: 1.25rem;
+}

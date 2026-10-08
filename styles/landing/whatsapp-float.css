@@ -1,0 +1,177 @@
+/* WhatsApp float — split label + neon icon (theme-matched) */
+.wa-float {
+  --wa-cut: 8px;
+  --float-bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
+  --float-side: 0.9rem;
+  position: fixed;
+  z-index: 45;
+  right: var(--float-side);
+  bottom: var(--float-bottom);
+  opacity: 0;
+  transform: translateY(0.75rem) scale(0.94);
+  pointer-events: none;
+  transition:
+    opacity 0.28s ease,
+    transform 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+    bottom 0.22s ease;
+}
+
+.wa-float--visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+.wa-float--lifted {
+  bottom: calc(5.35rem + env(safe-area-inset-bottom, 0px));
+}
+
+.wa-float__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Label: frame padding = continuous neon edge (clip-path breaks CSS border) */
+.wa-float__label {
+  display: none;
+  max-width: 9.5rem;
+}
+
+.wa-float__label-frame {
+  display: block;
+  padding: 1px;
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--color-neon, #ff7a1a) 90%, #fff) 0%,
+    color-mix(in srgb, var(--color-neon, #ff7a1a) 70%, #2a2a2a) 55%,
+    color-mix(in srgb, var(--color-neon, #ff7a1a) 85%, #128c7e) 100%
+  );
+  clip-path: polygon(
+    0 0,
+    calc(100% - var(--wa-cut)) 0,
+    100% var(--wa-cut),
+    100% 100%,
+    var(--wa-cut) 100%,
+    0 calc(100% - var(--wa-cut))
+  );
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.4);
+}
+
+.wa-float__label-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  padding: 0.55rem 0.8rem;
+  background:
+    radial-gradient(ellipse at 0% 0%, rgba(255, 122, 26, 0.1), transparent 55%),
+    linear-gradient(165deg, #141414 0%, #0a0a0a 100%);
+  clip-path: polygon(
+    0 0,
+    calc(100% - var(--wa-cut)) 0,
+    100% var(--wa-cut),
+    100% 100%,
+    var(--wa-cut) 100%,
+    0 calc(100% - var(--wa-cut))
+  );
+}
+
+.wa-float__kicker {
+  font-family: var(--font-display), ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.48rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--color-neon, #ff7a1a) 80%, #8d8d8d);
+  line-height: 1;
+}
+
+.wa-float__text {
+  font-family: var(--font-display), ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #f2f2f2;
+  line-height: 1.15;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.wa-float__btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.25rem;
+  height: 3.25rem;
+  flex-shrink: 0;
+  color: #050505;
+  background: var(--color-neon, #ff7a1a);
+  clip-path: polygon(
+    0 0,
+    calc(100% - var(--wa-cut)) 0,
+    100% var(--wa-cut),
+    100% 100%,
+    var(--wa-cut) 100%,
+    0 calc(100% - var(--wa-cut))
+  );
+  box-shadow:
+    0 0 16px rgba(255, 122, 26, 0.28),
+    0 10px 24px rgba(0, 0, 0, 0.4);
+  transition:
+    transform 0.15s ease,
+    filter 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.wa-float__btn svg {
+  width: 1.95rem;
+  height: 1.95rem;
+}
+
+.wa-float__link:hover .wa-float__btn,
+.wa-float__link:focus-visible .wa-float__btn {
+  filter: brightness(1.06);
+  transform: translateY(-2px);
+  box-shadow:
+    0 0 22px rgba(255, 122, 26, 0.4),
+    0 14px 28px rgba(0, 0, 0, 0.45);
+}
+
+.wa-float__link:hover .wa-float__label-frame,
+.wa-float__link:focus-visible .wa-float__label-frame {
+  filter: brightness(1.08);
+}
+
+.wa-float__link:active .wa-float__btn {
+  transform: translateY(0) scale(0.97);
+}
+
+@media (min-width: 640px) {
+  .wa-float {
+    --float-bottom: calc(1.25rem + env(safe-area-inset-bottom, 0px));
+    --float-side: 1.25rem;
+  }
+
+  .wa-float__label {
+    display: block;
+  }
+}
+
+/* Mobile pay/order bars hilang di ≥960px — kembalikan posisi default */
+@media (min-width: 960px) {
+  .wa-float--lifted {
+    bottom: var(--float-bottom);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wa-float,
+  .wa-float__btn {
+    transition: none;
+  }
+}

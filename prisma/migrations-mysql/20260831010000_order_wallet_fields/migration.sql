@@ -1,0 +1,5 @@
+-- AlterTable
+ALTER TABLE `orders` ADD COLUMN `poinUsed` INTEGER NOT NULL DEFAULT 0,
+    ADD COLUMN `saldoUsed` INTEGER NOT NULL DEFAULT 0,
+    ADD COLUMN `walletDebitedAt` DATETIME(3) NULL,
+    ADD COLUMN `walletRefundedAt` DATETIME(3) NULL;

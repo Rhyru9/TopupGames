@@ -1,0 +1,60 @@
+@media (max-width: 1023px) {
+  .animate-marquee {
+    animation-duration: 120s;
+  }
+
+  .header-fx-pulse,
+  .banner-flow,
+  .banner-blob,
+  .banner-blob-2,
+  .banner-beam {
+    animation: none !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-float,
+  .animate-float-slow,
+  .animate-pulse-glow,
+  .animate-spin-slow,
+  .animate-marquee,
+  .animate-rise,
+  .shimmer,
+  .logo-eyes,
+  .banner-flow,
+  .banner-blob,
+  .banner-blob-2,
+  .banner-beam,
+  .header-fx-glow,
+  .header-fx-glow-2,
+  .header-fx-glow-3,
+  .header-fx-core,
+  .header-fx-pulse,
+  .header-fx-mote,
+  .game-nameplate::before,
+  .flash-neon-pulse,
+  .flash-card-in,
+  .flash-neon-price,
+  .flash-fire,
+  .flash-fire__flame,
+  .flash-fire__flame::before,
+  .flash-fire__flame::after,
+  .popular-neon-card-in,
+  .popular-neon__flame,
+  .popular-neon__flame-core,
+  .popular-neon__flame-svg,
+  .popular-neon__flame-outer,
+  .popular-neon__flame-inner,
+  .product-tile::before,
+  .product-tile::after {
+    animation: none !important;
+  }
+
+  .flash-neon-card:hover {
+    transform: none;
+  }
+
+  .flash-neon-card:hover .flash-neon-card__media img {
+    transform: none;
+  }
+}

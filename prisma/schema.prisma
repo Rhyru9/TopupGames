@@ -1,0 +1,745 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../app/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum AdminRole {
+  SUPER
+  OPERATOR
+}
+
+enum ProductStatus {
+  ACTIVE
+  HIDDEN
+}
+
+enum ProductSkuStatus {
+  AVAILABLE
+  UNAVAILABLE
+}
+
+enum MemberStatus {
+  ACTIVE
+  SUSPENDED
+  BANNED
+}
+
+enum MemberLedgerKind {
+  SALDO
+  POIN
+}
+
+enum MemberLedgerDirection {
+  CREDIT
+  DEBIT
+}
+
+enum OrderPaymentStatus {
+  UNPAID
+  PAID
+  EXPIRED
+  FAILED
+}
+
+enum SitePopupMode {
+  IMAGE
+  TEXT
+}
+
+enum OrderFulfillmentStatus {
+  NONE
+  QUEUED
+  PROCESSING
+  SUCCESS
+  FAILED
+  CANCELLED
+}
+
+enum FulfillmentLogAction {
+  CREATE
+  POLL
+  WEBHOOK
+  RETRY
+}
+
+enum FulfillmentLogStatus {
+  PENDING
+  SUCCESS
+  FAILED
+}
+
+enum MemberEmailTokenType {
+  VERIFY
+  RESET_PASSWORD
+}
+
+enum PromoVoucherType {
+  GENERAL
+  SPECIAL
+}
+
+enum PromoVoucherDiscountType {
+  PERCENT
+  FIXED
+}
+
+enum PromoVoucherRedemptionStatus {
+  RESERVED
+  CONFIRMED
+  RELEASED
+}
+
+enum ExpenseCategory {
+  ADS
+  OPERATIONAL
+  INFRASTRUCTURE
+  SALARY
+  OTHER
+}
+
+model FulfillmentProvider {
+  id               String    @id @default(cuid())
+  slug             String    @unique
+  name             String
+  description      String?   @db.Text
+  docsUrl          String?   @db.VarChar(500)
+  config           Json?
+  sandboxMode      Boolean   @default(false)
+  sortOrder        Int       @default(0)
+  isActive         Boolean   @default(true)
+  /** Boleh muncul di /console/product-skus/sync (import batch dari API katalog). */
+  supportsCatalogSync Boolean @default(false)
+  balanceAmount    Int?
+  balanceCurrency  String?   @db.VarChar(10)
+  balanceLabel     String?   @db.VarChar(80)
+  balanceSyncedAt  DateTime?
+  balanceSyncError String?   @db.Text
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  productSkus      ProductSku[]
+  productProviders ProductProvider[]
+
+  @@index([isActive, sortOrder])
+  @@map("fulfillment_providers")
+}
+
+model Admin {
+  id           String    @id @default(cuid())
+  name         String
+  email        String    @unique
+  passwordHash String
+  avatar       String?   @db.VarChar(500)
+  role         AdminRole @default(SUPER)
+  isActive     Boolean   @default(true)
+  lastLoginAt  DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  expenses Expense[]
+
+  @@map("admins")
+}
+
+model Category {
+  id                   String   @id @default(cuid())
+  slug                 String   @unique
+  name                 String
+  iconUrl              String?  @db.VarChar(500)
+  sortOrder            Int      @default(0)
+  isActive             Boolean  @default(true)
+  /** Prefill Product.requiresLogin saat tambah produk di kategori ini. */
+  defaultRequiresLogin Boolean  @default(false)
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+
+  products Product[]
+
+  @@index([isActive, sortOrder])
+  @@map("categories")
+}
+
+model Product {
+  id                String        @id @default(cuid())
+  categoryId        String
+  slug              String        @unique
+  name              String
+  subtitle          String        @default("")
+  isPopular         Boolean       @default(false)
+  /** Jumlah terjual manual untuk social proof di kartu populer. 0 = sembunyikan badge. */
+  soldCount         Int           @default(0)
+  status            ProductStatus @default(ACTIVE)
+  thumbnailUrl      String        @db.VarChar(500)
+  bannerUrl         String        @default("") @db.VarChar(500)
+  requiresZone      Boolean       @default(false)
+  /** Checkout wajib member login (sumber kebenaran, bukan kategori). */
+  requiresLogin     Boolean       @default(false)
+  nicknameCheckCode String?
+  guideHtml         String?       @db.Text
+  fieldHintHtml     String?       @db.Text
+  inputFields       Json?
+  sortOrder         Int           @default(0)
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+
+  category         Category          @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+  types            ProductType[]
+  skus             ProductSku[]
+  productProviders ProductProvider[]
+  orders           Order[]
+
+  @@index([status, sortOrder])
+  @@index([isPopular, status, sortOrder])
+  @@index([categoryId])
+  @@map("products")
+}
+
+model ProductType {
+  id        String   @id @default(cuid())
+  productId String
+  name      String
+  slug      String
+  iconUrl   String?  @db.VarChar(500)
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  product   Product        @relation(fields: [productId], references: [id], onDelete: Cascade)
+  skus      ProductSku[]
+
+  @@unique([productId, slug])
+  @@index([productId, sortOrder])
+  @@map("product_types")
+}
+
+model ProductSku {
+  id                  String           @id @default(cuid())
+  productId           String
+  productTypeId       String?
+  name                String
+  providerId          String
+  providerSku         String
+  providerTypeKey     String?          @db.VarChar(120)
+  providerProductName String?          @db.VarChar(500)
+  keepCustomName      Boolean          @default(false)
+  costPrice           Int
+  marginGuest         Int              @default(0)
+  marginMember        Int              @default(0)
+  priceGuest          Int
+  priceMember         Int
+  /** Poin cashback untuk member saat order lunas. */
+  cashbackPoin        Int              @default(0)
+  /** Brand/operator katalog provider per SKU (Melostore brandName, Digiflazz brand, IAK operator). */
+  providerCatalogBrand String?          @db.VarChar(500)
+  status              ProductSkuStatus @default(AVAILABLE)
+  note                String?          @db.Text
+  createdAt           DateTime         @default(now())
+  updatedAt           DateTime         @updatedAt
+
+  product     Product             @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productType ProductType?        @relation(fields: [productTypeId], references: [id], onDelete: SetNull)
+  provider    FulfillmentProvider @relation(fields: [providerId], references: [id], onDelete: Restrict)
+  flashSaleItems FlashSaleItem[]
+  orders      Order[]
+
+  @@unique([productId, providerId, providerSku])
+  @@index([productId, status, costPrice])
+  @@index([productId, productTypeId, costPrice])
+  @@index([providerId])
+  @@index([providerSku])
+  @@map("product_skus")
+}
+
+model FlashSale {
+  id        String   @id @default(cuid())
+  name      String
+  /** Judul baris 1 landing. Kosong = HARGA SPESIAL. */
+  headline  String   @default("")
+  /** Judul baris 2 (neon). Kosong = WAKTU TERBATAS! */
+  headlineAccent String @default("")
+  /** Teks kiri di landing (di bawah headline). Kosong = pakai nama campaign. */
+  tagline   String   @default("")
+  startsAt  DateTime
+  endsAt    DateTime
+  isEnabled Boolean  @default(true)
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  items FlashSaleItem[]
+
+  @@index([isEnabled, startsAt, endsAt])
+  @@index([sortOrder])
+  @@map("flash_sales")
+}
+
+model FlashSaleItem {
+  id           String   @id @default(cuid())
+  flashSaleId  String
+  productSkuId String
+  priceGuest   Int
+  priceMember  Int
+  /** Kuota flash sale untuk SKU ini. */
+  quota        Int      @default(10)
+  /** Kuota yang telah direservasi checkout, termasuk order belum dibayar. */
+  soldCount    Int      @default(0)
+  sortOrder    Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  flashSale  FlashSale  @relation(fields: [flashSaleId], references: [id], onDelete: Cascade)
+  productSku ProductSku @relation(fields: [productSkuId], references: [id], onDelete: Cascade)
+  orders Order[]
+
+  @@unique([flashSaleId, productSkuId])
+  @@index([flashSaleId, sortOrder])
+  @@index([productSkuId])
+  @@map("flash_sale_items")
+}
+
+model PromoVoucher {
+  id             String                   @id @default(cuid())
+  code           String                   @unique @db.VarChar(40)
+  label          String?                  @db.VarChar(120)
+  type           PromoVoucherType
+  discountType   PromoVoucherDiscountType
+  discountValue  Int
+  maxDiscount    Int                      @default(0)
+  minOrderAmount Int                      @default(0)
+  stock          Int
+  usedCount      Int                      @default(0)
+  perUserLimit   Int                      @default(0)
+  isEnabled      Boolean                  @default(true)
+  startsAt       DateTime?
+  endsAt         DateTime?
+  createdAt      DateTime                 @default(now())
+  updatedAt      DateTime                 @updatedAt
+
+  redemptions PromoVoucherRedemption[]
+
+  @@index([isEnabled, startsAt, endsAt])
+  @@map("promo_vouchers")
+}
+
+model PromoVoucherRedemption {
+  id             String                       @id @default(cuid())
+  voucherId      String
+  orderId        String                       @unique
+  memberId       String?
+  guestKey       String?                      @db.VarChar(64)
+  discountAmount Int
+  status         PromoVoucherRedemptionStatus @default(RESERVED)
+  createdAt      DateTime                     @default(now())
+  confirmedAt    DateTime?
+  releasedAt     DateTime?
+
+  voucher PromoVoucher @relation(fields: [voucherId], references: [id], onDelete: Restrict)
+  order   Order          @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  member  Member?        @relation(fields: [memberId], references: [id], onDelete: SetNull)
+
+  @@index([voucherId, status])
+  @@index([memberId, voucherId])
+  @@index([guestKey, voucherId])
+  @@map("promo_voucher_redemptions")
+}
+
+model ProductProvider {
+  id         String   @id @default(cuid())
+  productId  String
+  providerId String
+  isEnabled  Boolean  @default(true)
+  filters    Json     @default("{}")
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  product  Product             @relation(fields: [productId], references: [id], onDelete: Cascade)
+  provider FulfillmentProvider @relation(fields: [providerId], references: [id], onDelete: Cascade)
+
+  @@unique([productId, providerId])
+  @@index([productId])
+  @@map("product_providers")
+}
+
+model Banner {
+  id        String   @id @default(cuid())
+  title     String   @db.VarChar(200)
+  imageUrl  String   @db.VarChar(500)
+  href      String   @default("") @db.VarChar(500)
+  sortOrder Int      @default(0)
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([isActive, sortOrder])
+  @@map("banners")
+}
+
+model SitePopup {
+  id             String        @id @default(cuid())
+  title          String        @db.VarChar(200)
+  mode           SitePopupMode @default(IMAGE)
+  body           String?       @db.Text
+  imageUrl       String?       @db.VarChar(500)
+  ctaLabel       String        @default("") @db.VarChar(80)
+  ctaHref        String        @default("") @db.VarChar(500)
+  dismissMinutes Int           @default(5)
+  sortOrder      Int           @default(0)
+  startsAt       DateTime?
+  endsAt         DateTime?
+  isActive       Boolean       @default(true)
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  @@index([isActive, sortOrder])
+  @@map("site_popups")
+}
+
+model TickerItem {
+  id        String   @id @default(cuid())
+  label     String   @db.VarChar(120)
+  detail    String   @db.VarChar(160)
+  href      String   @default("") @db.VarChar(500)
+  sortOrder Int      @default(0)
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([isActive, sortOrder])
+  @@map("ticker_items")
+}
+
+model ContentPage {
+  id           String   @id @default(cuid())
+  slug         String   @unique @db.VarChar(120)
+  title        String   @db.VarChar(200)
+  content      String   @db.Text
+  sortOrder    Int      @default(0)
+  isActive     Boolean  @default(true)
+  showInFooter Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([isActive, showInFooter, sortOrder])
+  @@map("content_pages")
+}
+
+model Article {
+  id              String   @id @default(cuid())
+  slug            String   @unique @db.VarChar(120)
+  title           String   @db.VarChar(200)
+  excerpt         String   @db.Text
+  content         String   @db.Text
+  coverImageUrl   String   @db.VarChar(500)
+  coverImageAlt   String   @db.VarChar(200)
+  metaTitle       String?  @db.VarChar(200)
+  metaDescription String?  @db.Text
+  metaKeywords    String?  @db.Text
+  ogImageUrl      String?  @db.VarChar(500)
+  authorName      String?  @db.VarChar(120)
+  publishedAt     DateTime @default(now())
+  isActive        Boolean  @default(true)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([isActive, publishedAt])
+  @@map("articles")
+}
+
+model Expense {
+  id               String          @id @default(cuid())
+  date             DateTime        @db.Date
+  category         ExpenseCategory @default(OTHER)
+  description      String          @db.VarChar(500)
+  amount           Int
+  receiptUrl       String?         @db.VarChar(500)
+  createdByAdminId String?
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime        @updatedAt
+
+  createdByAdmin Admin? @relation(fields: [createdByAdminId], references: [id], onDelete: SetNull)
+
+  @@index([date])
+  @@index([category, date])
+  @@map("expenses")
+}
+
+model Member {
+  id            String       @id @default(cuid())
+  /** ID publik member: CUS + 8 digit (contoh CUS12345678). */
+  memberCode    String       @unique @db.VarChar(12)
+  name          String
+  email         String       @unique
+  whatsapp      String?      @unique @db.VarChar(20)
+  passwordHash  String?
+  image         String?      @db.VarChar(500)
+  googleId      String?      @unique @db.VarChar(120)
+  emailVerified DateTime?
+  /** Mirror status === ACTIVE agar cek login lama tetap valid. */
+  isActive      Boolean      @default(true)
+  status        MemberStatus @default(ACTIVE)
+  statusReason  String?      @db.VarChar(500)
+  statusAt      DateTime?
+  lastLoginAt   DateTime?
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+
+  balance       MemberBalance?
+  ledgerEntries MemberLedgerEntry[]
+  deposits      MemberDeposit[]
+  orders              Order[]
+  emailTokens         MemberEmailToken[]
+  voucherRedemptions  PromoVoucherRedemption[]
+
+  @@index([isActive])
+  @@index([status])
+  @@map("members")
+}
+
+model MemberBalance {
+  id        String   @id @default(cuid())
+  memberId  String   @unique
+  /** Saldo internal (Rupiah). */
+  saldo     Int      @default(0)
+  poin      Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  member Member @relation(fields: [memberId], references: [id], onDelete: Cascade)
+
+  @@map("member_balances")
+}
+
+model MemberLedgerEntry {
+  id               String                @id @default(cuid())
+  memberId         String
+  kind             MemberLedgerKind
+  direction        MemberLedgerDirection
+  /** Selalu positif. */
+  amount           Int
+  /** Saldo atau poin setelah mutasi (sesuai kind). */
+  balanceAfter     Int
+  reason           String                @db.VarChar(500)
+  createdByAdminId String?
+  createdAt        DateTime              @default(now())
+
+  member Member @relation(fields: [memberId], references: [id], onDelete: Cascade)
+
+  @@index([memberId, createdAt])
+  @@index([kind, createdAt])
+  @@map("member_ledger_entries")
+}
+
+model MemberDeposit {
+  id            String             @id @default(cuid())
+  depositCode   String             @unique @db.VarChar(32)
+  memberId      String
+  /** Nominal yang dikredit ke saldo. */
+  amount        Int
+  feeSnapshot   Int                @default(0)
+  /** amount + fee (dibayar ke payment gateway). */
+  totalAmount   Int
+  paymentStatus OrderPaymentStatus @default(UNPAID)
+  expiresAt     DateTime?
+  createdAt     DateTime           @default(now())
+  updatedAt     DateTime           @updatedAt
+
+  member   Member    @relation(fields: [memberId], references: [id], onDelete: Cascade)
+  payments Payment[]
+
+  @@index([memberId, createdAt])
+  @@index([paymentStatus, createdAt])
+  @@map("member_deposits")
+}
+
+model MemberEmailToken {
+  id        String               @id @default(cuid())
+  memberId  String
+  type      MemberEmailTokenType
+  tokenHash String               @unique @db.VarChar(64)
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime             @default(now())
+
+  member Member @relation(fields: [memberId], references: [id], onDelete: Cascade)
+
+  @@index([memberId, type])
+  @@map("member_email_tokens")
+}
+
+model EmailLog {
+  id          String   @id @default(cuid())
+  templateKey String   @db.VarChar(40)
+  entityType  String   @db.VarChar(20)
+  entityId    String   @db.VarChar(40)
+  recipient   String   @db.VarChar(190)
+  sentAt      DateTime @default(now())
+
+  @@unique([templateKey, entityType, entityId])
+  @@index([sentAt])
+  @@map("email_logs")
+}
+
+model Order {
+  id                     String                  @id @default(cuid())
+  orderCode              String                  @unique @db.VarChar(32)
+  checkoutKey            String?                 @unique @db.VarChar(64)
+  checkoutFingerprint    String?                 @db.VarChar(64)
+  flashSaleItemId        String?
+  flashSaleReleasedAt    DateTime?
+  memberId               String?
+  productId              String
+  productSkuId           String
+  productNameSnapshot    String                  @db.VarChar(200)
+  skuNameSnapshot        String                  @db.VarChar(200)
+  /** Harga item setelah flash, sebelum voucher. */
+  itemSubtotalSnapshot   Int                     @default(0)
+  voucherCodeSnapshot    String?                 @db.VarChar(40)
+  voucherDiscountSnapshot Int                    @default(0)
+  priceSnapshot          Int
+  feeSnapshot            Int                     @default(0)
+  amount                 Int
+  /** Ringkasan akun dari playerFields untuk list/search (bukan sumber kebenaran). */
+  playerLabel            String?                 @db.VarChar(255)
+  playerNickname         String?                 @db.VarChar(120)
+  /** Sumber kebenaran input akun sesuai product.inputFields. */
+  playerFields           Json?
+  email                  String?                 @db.VarChar(190)
+  whatsapp               String?                 @db.VarChar(20)
+  paymentStatus          OrderPaymentStatus      @default(UNPAID)
+  fulfillmentStatus      OrderFulfillmentStatus  @default(NONE)
+  providerSlug           String?                 @db.VarChar(40)
+  providerSkuSnapshot    String?                 @db.VarChar(120)
+  /** Ref transaksi eksternal di provider (bisa sama dengan orderCode). */
+  providerRefId          String?                 @db.VarChar(80)
+  fulfillmentMessage     String?                 @db.Text
+  fulfillmentSn          String?                 @db.VarChar(255)
+  fulfillmentAttemptedAt DateTime?
+  fulfillmentCompletedAt DateTime?
+  expiresAt              DateTime?
+  createdAt              DateTime                @default(now())
+  updatedAt              DateTime                @updatedAt
+
+  flashSaleItem FlashSaleItem? @relation(fields: [flashSaleItemId], references: [id], onDelete: SetNull)
+  member   Member?  @relation(fields: [memberId], references: [id], onDelete: SetNull)
+  product  Product  @relation(fields: [productId], references: [id], onDelete: Restrict)
+  productSku ProductSku @relation(fields: [productSkuId], references: [id], onDelete: Restrict)
+  payments Payment[]
+  fulfillmentLogs FulfillmentLog[]
+  wallet   OrderWallet?
+  voucherRedemption PromoVoucherRedemption?
+
+  @@index([email])
+  @@index([whatsapp])
+  @@index([playerLabel])
+  @@index([paymentStatus, createdAt])
+  @@index([fulfillmentStatus, paymentStatus])
+  @@index([providerRefId])
+  @@index([memberId, createdAt])
+  @@index([productId])
+  @@index([productSkuId])
+  @@index([flashSaleItemId])
+  @@map("orders")
+}
+
+/** Wallet/poin/cashback per order — dipisah dari orders agar fulfillment tetap ramping. */
+model OrderWallet {
+  orderId              String    @id
+  poinUsed             Int       @default(0)
+  saldoUsed            Int       @default(0)
+  walletDebitedAt      DateTime?
+  walletRefundedAt     DateTime?
+  cashbackPoinSnapshot Int       @default(0)
+  cashbackCreditedAt   DateTime?
+  createdAt            DateTime  @default(now())
+  updatedAt            DateTime  @updatedAt
+
+  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@map("order_wallets")
+}
+
+model FulfillmentLog {
+  id              String               @id @default(cuid())
+  orderId         String
+  providerSlug    String               @db.VarChar(40)
+  attempt         Int                  @default(1)
+  providerRef     String?              @db.VarChar(80)
+  action          FulfillmentLogAction
+  requestPayload  Json?
+  responsePayload Json?
+  status          FulfillmentLogStatus
+  message         String?              @db.Text
+  createdAt       DateTime             @default(now())
+
+  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@index([orderId, createdAt])
+  @@index([providerRef])
+  @@index([providerSlug, createdAt])
+  @@map("fulfillment_logs")
+}
+
+model Payment {
+  id                String             @id @default(cuid())
+  orderId           String?
+  memberDepositId   String?
+  provider          String             @db.VarChar(40)
+  channel           String             @db.VarChar(40)
+  channelName       String?            @db.VarChar(120)
+  reference         String             @unique @db.VarChar(80)
+  amount            Int
+  checkoutUrl       String?            @db.VarChar(500)
+  payCode           String?            @db.VarChar(120)
+  qrUrl             String?            @db.VarChar(500)
+  status            OrderPaymentStatus @default(UNPAID)
+  expiredAt         DateTime?
+  rawCreateResponse Json?
+  rawCallback       Json?
+  paidAt            DateTime?
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+
+  order          Order?          @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  memberDeposit  MemberDeposit?  @relation(fields: [memberDepositId], references: [id], onDelete: Cascade)
+
+  @@index([orderId])
+  @@index([memberDepositId])
+  @@index([status, createdAt])
+  @@map("payments")
+}
+
+model SiteSetting {
+  id        String   @id @default("default")
+  general   Json     @default("{}")
+  seo       Json     @default("{}")
+  storage   Json     @default("{}")
+  style     Json     @default("{}")
+  pwa       Json     @default("{}")
+  auth      Json     @default("{}")
+  cron      Json     @default("{}")
+  mail      Json     @default("{}")
+  updatedAt DateTime @updatedAt
+
+  @@map("site_settings")
+}
+
+/** Payment gateway (DOKU) — jalur bayar user, bukan fulfillment H2H. */
+model PaymentGateway {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  name        String
+  description String?  @db.Text
+  docsUrl     String?  @db.VarChar(500)
+  config      Json?
+  sandboxMode Boolean  @default(true)
+  sortOrder   Int      @default(0)
+  isActive    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("payment_gateways")
+}

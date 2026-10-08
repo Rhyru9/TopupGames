@@ -1,0 +1,97 @@
+/* Shell & layout halaman storefront dedicated (promo, produk, flash sale) */
+
+.storefront-page {
+  min-height: 100vh;
+  color: var(--foreground, #e8e8e8);
+  padding-bottom: calc(5rem + env(safe-area-inset-bottom, 0px));
+}
+
+.storefront-page__inner {
+  margin: 0 auto;
+  padding: 6.5rem 1rem 2rem;
+}
+
+.storefront-page__eyebrow {
+  margin: 0;
+  font-family: var(--font-body), ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--color-neon, #ff7a1a);
+}
+
+.storefront-page__title {
+  margin: 0.65rem 0 0;
+  font-family: var(--font-display), ui-sans-serif, system-ui, sans-serif;
+  font-size: clamp(1.65rem, 5vw, 2.35rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  color: var(--color-chrome, #d8d8d8);
+}
+
+.storefront-page__title-accent {
+  display: block;
+  color: var(--color-neon, #ff7a1a);
+}
+
+.storefront-page__lead {
+  margin: 0.85rem 0 0;
+  max-width: 38rem;
+  font-size: 0.9375rem;
+  line-height: 1.55;
+  color: var(--color-chrome-dim, #8d8d8d);
+}
+
+.storefront-page__empty {
+  margin-top: 2rem;
+  border: 1px solid color-mix(in srgb, var(--color-neon, #ff7a1a) 18%, #2a2a2a);
+  border-radius: 1.25rem;
+  background: color-mix(in srgb, #0a0a0a 88%, transparent);
+  padding: 2.5rem 1.25rem;
+  text-align: center;
+}
+
+.storefront-page__empty-title {
+  margin: 0;
+  font-family: var(--font-display), ui-sans-serif, system-ui, sans-serif;
+  font-size: 1.05rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--color-chrome, #d8d8d8);
+}
+
+.storefront-page__empty-text {
+  margin: 0.65rem 0 0;
+  font-size: 0.875rem;
+  color: var(--color-chrome-dim, #8d8d8d);
+}
+
+.storefront-page__cta {
+  display: inline-flex;
+  margin-top: 1.25rem;
+  border-radius: 999px;
+  background: var(--color-neon, #ff7a1a);
+  padding: 0.75rem 1.25rem;
+  font-family: var(--font-body), ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.875rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+  color: var(--color-ink, #050505);
+}
+
+.storefront-page__cta--ghost {
+  background: transparent;
+  border: 1px solid color-mix(in srgb, var(--color-neon, #ff7a1a) 45%, var(--color-line, #2a2a2a));
+  color: var(--color-neon, #ff7a1a);
+}
+
+.storefront-page__cta--ghost:hover {
+  background: rgba(255, 122, 26, 0.1);
+}
+
+.storefront-page__footer-cta {
+  margin-top: 1.75rem;
+  text-align: center;
+}
